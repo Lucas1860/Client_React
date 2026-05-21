@@ -1,0 +1,286 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #e2dcd3;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  overflow: hidden;
+}
+
+.app {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  background: #f5efe7;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+/* ===== Боковая панель ===== */
+.sidebar {
+  background: #fef7e8;
+  border-right: 1px solid #e2d5c0;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: width 0.1s ease;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.05);
+  z-index: 10;
+}
+
+/* Контейнер для аватара и перекладины */
+.avatar-container {
+  position: relative;
+  height: 180px;
+  background: #f5ede1;
+  border-bottom: 2px solid #e0cfb5;
+  margin-bottom: 24px;
+}
+
+/* Перекладина (горизонтальная линия) */
+.perch {
+  position: absolute;
+  bottom: 40px;
+  left: 10%;
+  width: 80%;
+  height: 4px;
+  background: #b59e7a;
+  border-radius: 2px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Аватар — позиционируем на перекладине */
+.avatar {
+  position: absolute;
+  bottom: 40px;  /* сидит на перекладине */
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.1));
+  transition: transform 0.2s;
+}
+
+.avatar:hover {
+  transform: translateX(-50%) scale(1.02);
+}
+
+/* Голова — большой овал (мантоу) */
+.head {
+  width: 70px;
+  height: 90px;
+  background: #d9c8ad;
+  border-radius: 50%;
+  position: relative;
+  border: 2px solid #b7a073;
+  box-shadow: inset 0 0 0 2px #f0e2ce;
+}
+
+/* Глаза */
+.eyes {
+  position: absolute;
+  top: 35px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 18px;
+  width: 100%;
+  justify-content: center;
+}
+
+.eye {
+  width: 12px;
+  height: 12px;
+  background: #1e1a15;
+  border-radius: 50%;
+  transition: all 0.1s;
+}
+
+/* Тело — палка */
+.body {
+  width: 12px;
+  height: 40px;
+  background: #b59e7a;
+  margin-top: -8px;
+  border-radius: 4px;
+}
+
+/* Ноги — палочки, свисают */
+.legs {
+  display: flex;
+  gap: 16px;
+  margin-top: -4px;
+}
+
+.leg {
+  width: 10px;
+  height: 35px;
+  background: #b59e7a;
+  border-radius: 6px;
+  transform-origin: top center;
+  /* Лёгкое покачивание для живости (статично по умолчанию, но добавим анимацию на ховер) */
+}
+
+.avatar:hover .leg {
+  animation: swing 1s ease-in-out infinite;
+}
+
+@keyframes swing {
+  0% { transform: rotate(-6deg); }
+  50% { transform: rotate(6deg); }
+  100% { transform: rotate(-6deg); }
+}
+
+/* Панель вопросов */
+.question-panel {
+  padding: 16px;
+  background: #fffaf2;
+  margin: 12px;
+  border-radius: 24px;
+  border: 1px solid #eedfcb;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.avatar-prompt {
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #a47e5c;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.question-text p {
+  margin: 12px 0;
+  font-size: 1.1rem;
+  line-height: 1.4;
+  color: #2c241a;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 16px 0;
+}
+
+.options button {
+  background: #f0e4d4;
+  border: 1px solid #dccdb6;
+  padding: 10px 12px;
+  border-radius: 40px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #3e2e22;
+  text-align: left;
+}
+
+.options button:hover {
+  background: #e2cfb9;
+  transform: translateX(4px);
+  border-color: #b4926a;
+}
+
+.history-hint {
+  font-size: 0.7rem;
+  color: #b6a088;
+  text-align: center;
+  margin-top: 16px;
+  border-top: 1px dashed #e2cfb9;
+  padding-top: 12px;
+  font-style: italic;
+}
+
+/* Слайдер регулировки ширины */
+.resize-control {
+  margin-top: auto;
+  padding: 20px 16px;
+  background: #f3ece1;
+  border-top: 1px solid #e2cfb5;
+  font-size: 0.8rem;
+  color: #5a4633;
+}
+
+.resize-control label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.resize-control input {
+  width: 100%;
+  cursor: pointer;
+  accent-color: #b4926a;
+}
+
+/* ===== Область чтения ===== */
+.reading-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 40px 48px;
+  background: #fffdf9;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #2c241a;
+}
+
+.book-header {
+  border-bottom: 2px solid #e0cfb5;
+  margin-bottom: 28px;
+  padding-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.book-header h2 {
+  font-weight: normal;
+  font-size: 1.8rem;
+  letter-spacing: -0.3px;
+  color: #4a3926;
+}
+
+.chapter {
+  color: #b4926a;
+  font-style: italic;
+}
+
+.book-text p {
+  margin-bottom: 1.2rem;
+  text-indent: 2em;
+}
+
+/* Адаптив для маленьких экранов (планшеты) */
+@media (max-width: 768px) {
+  .sidebar {
+    position: absolute;
+    z-index: 20;
+    height: 100%;
+    box-shadow: 4px 0 12px rgba(0,0,0,0.2);
+  }
+  .reading-area {
+    padding: 24px 20px;
+    margin-left: 280px; /* чтобы не перекрывалось, но лучше сделать сворачивание, для демо оставим */
+  }
+  .resize-control input {
+    width: 90%;
+  }
+}
+
+/* Скролл для чтения */
+.reading-area::-webkit-scrollbar {
+  width: 8px;
+}
+
+.reading-area::-webkit-scrollbar-track {
+  background: #f1e8de;
+}
+
+.reading-area::-webkit-scrollbar-thumb {
+  background: #cbbca4;
+  border-radius: 4px;
+}
